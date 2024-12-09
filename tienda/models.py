@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100, unique=True)
@@ -12,7 +13,12 @@ class Producto(models.Model):
     imagen = models.ImageField(upload_to='productos/', blank=True, null=True)
     descripcion = models.TextField()
     precio = models.DecimalField(max_digits=10, decimal_places=2)
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name="productos")
+    categoria = models.ForeignKey('Categoria', on_delete=models.CASCADE, related_name="productos")
+
+    def clean(self):
+        # Validación para que el precio no sea negativo
+        if self.precio < 0:
+            raise ValidationError("El precio no puede ser un número negativo.")
 
     def __str__(self):
         return self.titulo

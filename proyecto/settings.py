@@ -112,9 +112,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Santiago'
 
 USE_I18N = True
 
@@ -138,3 +138,12 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_REDIRECT_URL = '/'  # Cambia a la URL donde quieres redirigir
 LOGOUT_REDIRECT_URL = '/'  # Opcional: dónde redirigir después de cerrar sesión
+
+# Configuración básica para enviar correos (SMTP)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Cambia por el servidor que uses
+EMAIL_PORT = 587  # Puerto SMTP, suele ser 587 para TLS
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'sebaeriz6@gmail.com'  # Tu correo
+EMAIL_HOST_PASSWORD = 'btzifmkikzsymxtv'      # Contraseña
+DEFAULT_FROM_EMAIL = 'tu-correo@example.com'

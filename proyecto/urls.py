@@ -25,7 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', core_views.index, name='index'),
     path('about/', core_views.about, name='about'),
-    path('creadores/', core_views.creadores, name='creadores'),
+    path('contactanos/', core_views.contactanos, name='contactanos'),
     path('gallery/', core_views.galeria, name="galeria"),
     path('productos/', tienda_views.lista_productos, name='lista_productos'),
     path('categoria/<int:categoria_id>/', tienda_views.productos_por_categoria, name='productos_por_categoria'),
