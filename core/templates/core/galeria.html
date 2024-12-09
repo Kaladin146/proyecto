@@ -1,0 +1,77 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block header %}
+<body>
+
+    <!-- Encabezado con inicio de sesión/registro o el nombre del usuario -->
+    <header class="encabezado">
+        <div class="usuario">
+            {% if user.is_authenticated %}
+                <span>Bienvenido, {{ user.username }}</span>
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-logout">Cerrar Sesión</button>
+                </form>
+            {% else %}
+                <div class="btn-container">
+                    <a href="{% url 'login' %}" class="btn-login">Iniciar Sesión</a>
+                    <a href="{% url 'register' %}" class="btn-register">Registrarse</a>
+                </div>
+            {% endif %}
+        </div>
+    </header>
+
+    <!-- Contenedor principal con filtro a la izquierda y productos a la derecha -->
+    <div class="contenido-principal">
+        <!-- Filtros a la izquierda -->
+        <div class="filtros">
+            <h3>Filtrar por categoría</h3>
+            <a href="{% url 'lista_productos' %}" class="categoria">Todos</a>
+            {% for categoria in categorias %}
+                <a href="{% url 'productos_por_categoria' categoria.id %}" class="categoria">
+                    {{ categoria.nombre }}
+                </a>
+            {% endfor %}
+        </div>
+
+        <!-- Productos a la derecha -->
+        <div class="productos">
+            {% for producto in productos %}
+            <div class="producto tarjeta">
+                {% if producto.imagen %}
+                    <img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" class="imagen-producto">
+                {% else %}
+                    <img src="{% static 'tienda/no-imagen.png' %}" alt="Sin imagen" class="imagen-producto">
+                {% endif %}
+                
+                <div class="info-producto">
+                    <h3>{{ producto.titulo }}</h3>
+                    <p>{{ producto.descripcion }}</p>
+                    <p><strong>Precio:</strong> ${{ producto.precio }}</p>
+                    <form action="{% url 'agregar_al_carrito' producto.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-cotizacion">Añadir al carrito</button>
+                    </form>
+                </div>
+            </div>
+            {% empty %}
+                <p>No hay productos disponibles en esta categoría.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Botón flotante del carrito -->
+    <a href="{% url 'ver_carrito' %}" class="btn-carrito">
+        <i class="fas fa-shopping-cart"></i>
+        {% if request.session.total_productos %}
+            <span class="contador-carrito">{{ request.session.total_productos }}</span>
+        {% else %}
+            <span class="contador-carrito">0</span>
+        {% endif %}
+    </a>
+
+</body>
+{% endblock %}      
+
+
